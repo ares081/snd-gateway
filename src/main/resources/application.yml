@@ -1,0 +1,32 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: snd-gateway
+  profiles:
+    active: local
+
+  cloud:
+    nacos:
+      config:
+        server-addr: localhost:8848
+        data-id: snd-gateway
+        file-extension: json
+        group: DEFAULT_GROUP
+      discovery:
+        server-addr: localhost:8848
+        group: DEFAULT_GROUP
+        register-enabled: true
+
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: snd-user
+          uri: lb://snd-user
+          predicates:
+            - Path=/api/v1/user/**
+          filters:
+            - StripPrefix=1

@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: snd-gateway
+  profiles:
+    active: prod
