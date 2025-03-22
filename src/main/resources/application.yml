@@ -14,6 +14,8 @@ spring:
         data-id: snd-gateway
         file-extension: json
         group: DEFAULT_GROUP
+        namespace:
+
       discovery:
         server-addr: localhost:8848
         group: DEFAULT_GROUP
@@ -23,10 +25,4 @@ spring:
       discovery:
         locator:
           enabled: true
-      routes:
-        - id: snd-user
-          uri: lb://snd-user
-          predicates:
-            - Path=/api/v1/user/**
-          filters:
-            - StripPrefix=1
+          lower-case-service-id: true
