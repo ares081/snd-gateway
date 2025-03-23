@@ -1,5 +1,8 @@
 package com.ares.exception;
 
+import lombok.Getter;
+
+@Getter
 public class BizException extends RuntimeException {
 
   private final int code;
