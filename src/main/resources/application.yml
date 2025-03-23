@@ -6,6 +6,9 @@ spring:
     name: snd-gateway
   profiles:
     active: local
+  data:
+    redis:
+      host: localhost
 
   cloud:
     nacos:
@@ -26,3 +29,7 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
+
+auth:
+  token:
+    secret-key: qLuRTgBMSKSSPA23WXVSTiH87epblwmH
