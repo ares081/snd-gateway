@@ -15,6 +15,7 @@ public class Response<T> {
   private int code;
   private String msg;
   private T data;
+  private Long timestamp;
 
   public Response() {}
 
@@ -35,6 +36,7 @@ public class Response<T> {
     this.code = code;
     this.msg = msg;
     this.data = data;
+    this.timestamp = System.currentTimeMillis();
   }
 
   public static <T> Response<T> ok(T data) {

@@ -26,7 +26,6 @@ public class AuthController {
   @PostMapping("/login")
   public Mono<ResponseEntity<Response<?>>> login(ServerHttpRequest httpRequest,
       @RequestBody LoginRequest request) {
-    logger.info("login request: {}", request);
     return authService.login(httpRequest, request)
         .map(res -> ResponseEntity.ok()
             .header(TokenHelper.AUTH_TOKEN_HEADER, TokenHelper.AUTH_TOKEN_PREFIX + res.getToken())

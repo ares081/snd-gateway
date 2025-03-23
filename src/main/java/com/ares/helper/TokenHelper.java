@@ -53,7 +53,7 @@ public class TokenHelper {
       byte[] decryptedBytes = cipher.doFinal(Base64.getUrlDecoder().decode(encryptedToken));
       return new String(decryptedBytes);
     } catch (Exception e) {
-      logger.error("encryptedToken error: {}", e);
+      logger.info("decryptToken failed: {}", e.getMessage());
     }
     return null;
   }

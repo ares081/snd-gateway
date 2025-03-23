@@ -17,7 +17,7 @@ import com.ares.helper.TokenHelper;
 import reactor.core.publisher.Mono;
 
 @Component
-public class UserAuthAdapter implements GlobalFilter, Ordered {
+public class UserAuthAdapter implements GlobalFilter{
 
   // 往后端传递
   private static final String USER_HEADER = "user";
@@ -64,10 +64,4 @@ public class UserAuthAdapter implements GlobalFilter, Ordered {
     response.setStatusCode(HttpStatus.UNAUTHORIZED);
     return response.setComplete();
   }
-
-  @Override
-  public int getOrder() {
-    return -100;
-  }
-
 }
