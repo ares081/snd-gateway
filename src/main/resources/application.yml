@@ -33,3 +33,16 @@ spring:
 auth:
   token:
     secret-key: qLuRTgBMSKSSPA23WXVSTiH87epblwmH
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 5000
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+    instances:
+      myCircuitBreaker:
+        baseConfig: default

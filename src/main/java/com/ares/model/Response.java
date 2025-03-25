@@ -6,7 +6,8 @@ import lombok.Setter;
 @Setter
 @Getter
 public class Response<T> {
-  public static final int OK_CODE = 2000;
+  public static final int OK_CODE = 200;
+  public static final int FAILED_CODE = 500;
 
   public static final boolean OK_FLAG = true;
   public static final boolean FAILED_FLAG = false;

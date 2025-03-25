@@ -20,6 +20,7 @@
   <properties>
     <java.version>17</java.version>
     <nacos.version>2023.0.3.2</nacos.version>
+    <alibaba.cloud.version>2023.0.3.2</alibaba.cloud.version>
     <jackson.version>2.17.2</jackson.version>
     <spring-boot.version>3.2.9</spring-boot.version>
   </properties>
@@ -47,13 +48,13 @@
     <dependency>
       <groupId>com.alibaba.cloud</groupId>
       <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-      <version>${nacos.version}</version>
+      <!-- <version>${nacos.version}</version> -->
     </dependency>
 
     <dependency>
       <groupId>com.alibaba.cloud</groupId>
       <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-      <version>${nacos.version}</version>
+      <!-- <version>${nacos.version}</version> -->
     </dependency>
 
     <dependency>
@@ -65,6 +66,12 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-bootstrap</artifactId>
+      <version>4.1.5</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-circuitbreaker-reactor-resilience4j</artifactId>
       <version>4.1.5</version>
     </dependency>
 
@@ -94,6 +101,17 @@
 
   </dependencies>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.alibaba.cloud</groupId>
+        <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+        <version>${alibaba.cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <build>
     <plugins>
       <plugin>
