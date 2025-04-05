@@ -3,6 +3,7 @@ package com.ares.service;
 import com.ares.model.Response;
 import java.time.Duration;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
@@ -10,6 +11,7 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.reactive.function.client.WebClient;
+import com.ares.config.webclient.CustomWebClientFactory;
 import com.ares.helper.TokenHelper;
 import com.ares.helper.TraceHelper;
 import com.ares.model.LoginRequest;
@@ -20,7 +22,7 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class AuthService {
-  private final Logger logger = org.slf4j.LoggerFactory.getLogger(AuthService.class);
+  private final Logger logger = LoggerFactory.getLogger(AuthService.class);
   private static final Duration TOKEN_VALIDITY = Duration.ofHours(24);
 
   @Autowired
@@ -31,8 +33,20 @@ public class AuthService {
 
   @Autowired
   private TokenHelper tokenHelper;
-  @Autowired
-  private WebClient.Builder webClientBuilder;
+
+  private final WebClient webClient;
+
+  public AuthService(CustomWebClientFactory webClientFactory) {
+    this.webClient = webClientFactory.createWebClient();
+  }
+
+  /**
+   * 登录
+   *
+   * @param httpRequest http请求
+   * @param request 登录请求
+   * @return 登录响应
+   */
 
   public Mono<LoginResponse> login(ServerHttpRequest httpRequest, LoginRequest request) {
     logger.info("login request: {}", request);
@@ -52,12 +66,13 @@ public class AuthService {
   }
 
   private Mono<LoginResponse> performLogin(LoginRequest request) {
-    return webClientBuilder.build().post().uri("http://snd-user/api/v1/user/login")
-        .header(TraceHelper.TRACE_ID, TraceHelper.generate()).bodyValue(request).retrieve()
+    return webClient.post().uri("/api/v1/user/login")
+        .header(TraceHelper.TRACE_ID, TraceHelper.generate())
+        .bodyValue(request)
+        .retrieve()
         .bodyToMono(new ParameterizedTypeReference<Response<UserInfo>>() {}).flatMap(res -> {
           String token = TokenHelper.generateToken();
           String encryptedToken = tokenHelper.encryptToken(token);
-
           return reactiveRedisTemplate.opsForValue()
               .set(token, gson.toJson(res.getData()), TOKEN_VALIDITY)
               .thenReturn(getLoginResponse(encryptedToken, res.getData()));

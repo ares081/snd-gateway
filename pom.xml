@@ -26,7 +26,11 @@
   </properties>
 
   <dependencies>
-
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-autoconfigure-processor</artifactId>
+      <optional>true</optional>
+    </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-redis</artifactId>
@@ -69,11 +73,11 @@
       <version>4.1.5</version>
     </dependency>
 
-    <dependency>
+    <!-- <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-circuitbreaker-reactor-resilience4j</artifactId>
       <version>4.1.5</version>
-    </dependency>
+    </dependency> -->
 
     <dependency>
       <groupId>org.springframework.boot</groupId>

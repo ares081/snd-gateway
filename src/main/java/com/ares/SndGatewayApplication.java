@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 public class SndGatewayApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SndGatewayApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(SndGatewayApplication.class, args);
+  }
 
-	@GetMapping("/health")
-	public String hello() {
-		return "Hello World!";
-	}
+  @GetMapping("/health")
+  public String hello() {
+    return "Hello World!";
+  }
 }

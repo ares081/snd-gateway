@@ -12,7 +12,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 public class RedisTemplateConfig {
   @Bean
-  public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory connectionFactory) {
+  RedisTemplate<String, String> redisTemplate(RedisConnectionFactory connectionFactory) {
     RedisTemplate<String, String> template = new RedisTemplate<>();
     template.setConnectionFactory(connectionFactory);
     template.setKeySerializer(new StringRedisSerializer());
@@ -22,13 +22,17 @@ public class RedisTemplateConfig {
 
 
   @Bean
-  public ReactiveRedisTemplate<String, String> reactiveRedisTemplate(
+  ReactiveRedisTemplate<String, String> reactiveRedisTemplate(
       ReactiveRedisConnectionFactory connectionFactory) {
     StringRedisSerializer serializer = new StringRedisSerializer();
 
     RedisSerializationContext<String, String> serializationContext =
-        RedisSerializationContext.<String, String>newSerializationContext().key(serializer)
-            .value(serializer).hashKey(serializer).hashValue(serializer).build();
+        RedisSerializationContext.<String, String>newSerializationContext()
+            .key(serializer)
+            .value(serializer)
+            .hashKey(serializer)
+            .hashValue(serializer)
+            .build();
     return new ReactiveRedisTemplate<>(connectionFactory, serializationContext);
   }
 }

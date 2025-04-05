@@ -1,5 +1,6 @@
 package com.ares.helper;
 
+import com.alibaba.nacos.common.utils.StringUtils;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.UUID;
@@ -10,10 +11,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import com.alibaba.nacos.common.utils.StringUtils;
 
 @Configuration
 public class TokenHelper {
+
   private final Logger logger = LoggerFactory.getLogger(TokenHelper.class);
 
   @Value("${auth.token.secret-key}")
@@ -29,12 +30,16 @@ public class TokenHelper {
       return null;
     }
     try {
-      SecretKeySpec secretKeySpec =
-          new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), ALGORITHM);
+      SecretKeySpec secretKeySpec = new SecretKeySpec(
+        secretKey.getBytes(StandardCharsets.UTF_8),
+        ALGORITHM
+      );
       Cipher cipher = Cipher.getInstance(ALGORITHM);
       cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
       byte[] encryptedBytes = cipher.doFinal(token.getBytes());
-      return Base64.getUrlEncoder().withoutPadding().encodeToString(encryptedBytes);
+      return Base64.getUrlEncoder()
+        .withoutPadding()
+        .encodeToString(encryptedBytes);
     } catch (Exception e) {
       logger.error("encryptToken error: {}", e);
     }
@@ -46,11 +51,15 @@ public class TokenHelper {
       return null;
     }
     try {
-      SecretKeySpec secretKeySpec =
-          new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), ALGORITHM);
+      SecretKeySpec secretKeySpec = new SecretKeySpec(
+        secretKey.getBytes(StandardCharsets.UTF_8),
+        ALGORITHM
+      );
       Cipher cipher = Cipher.getInstance(ALGORITHM);
       cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
-      byte[] decryptedBytes = cipher.doFinal(Base64.getUrlDecoder().decode(encryptedToken));
+      byte[] decryptedBytes = cipher.doFinal(
+        Base64.getUrlDecoder().decode(encryptedToken)
+      );
       return new String(decryptedBytes);
     } catch (Exception e) {
       logger.info("decryptToken failed: {}", e.getMessage());

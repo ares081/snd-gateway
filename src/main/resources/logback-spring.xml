@@ -1,20 +1,23 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <configuration scan="true" scanPeriod="10 seconds">
   <!-- 从Spring配置中获取应用名称 -->
-  <property name="PROJECT_NAME" value="snd-gateway"/>
+  <property name="PROJECT_NAME" value="snd-gateway" />
 
   <!-- 日志配置参数 -->
-  <property name="LOG_PATH" value="/var/logs/java/${PROJECT_NAME}"/>
-  <property name="LOG_FILE_MAX_SIZE" value="100MB"/>
-  <property name="LOG_FILE_MAX_HISTORY" value="30"/>
+  <property name="LOG_PATH" value="/var/logs/java/${PROJECT_NAME}" />
+  <property name="LOG_FILE_MAX_SIZE" value="100MB" />
+  <property name="LOG_FILE_MAX_HISTORY" value="30" />
 
   <!-- 日志文件名 -->
-  <property name="API_LOG" value="${PROJECT_NAME}-api"/>
-  <property name="INFO_LOG" value="${PROJECT_NAME}-info"/>
-  <property name="ERROR_LOG" value="${PROJECT_NAME}-error"/>
+  <property name="API_LOG" value="${PROJECT_NAME}-api" />
+  <property name="INFO_LOG" value="${PROJECT_NAME}-info" />
+  <property name="ERROR_LOG" value="${PROJECT_NAME}-error" />
 
   <!-- 日志格式 -->
-  <property name="LOG_PATTERN" value="${PROJECT_NAME} [%X{traceId}] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"/>
+  <property
+    name="LOG_PATTERN"
+    value="${PROJECT_NAME} [%X{traceId}] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
+  />
 
   <!-- 控制台输出 -->
   <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -25,21 +28,30 @@
   </appender>
 
   <!-- API访问日志 -->
-  <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+  <appender
+    name="INFO_FILE"
+    class="ch.qos.logback.core.rolling.RollingFileAppender"
+  >
     <file>${LOG_PATH}/${INFO_LOG}.log</file>
     <encoder>
       <pattern>${LOG_PATTERN}</pattern>
       <charset>UTF-8</charset>
     </encoder>
-    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-      <fileNamePattern>${LOG_PATH}/${INFO_LOG}.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+    <rollingPolicy
+      class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy"
+    >
+      <fileNamePattern
+      >${LOG_PATH}/${INFO_LOG}.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
       <maxFileSize>${LOG_FILE_MAX_SIZE}</maxFileSize>
       <maxHistory>${LOG_FILE_MAX_HISTORY}</maxHistory>
     </rollingPolicy>
   </appender>
 
   <!-- 错误日志 -->
-  <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+  <appender
+    name="ERROR_FILE"
+    class="ch.qos.logback.core.rolling.RollingFileAppender"
+  >
     <file>${LOG_PATH}/${ERROR_LOG}.log</file>
     <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
       <level>ERROR</level>
@@ -48,22 +60,31 @@
       <pattern>${LOG_PATTERN}</pattern>
       <charset>UTF-8</charset>
     </encoder>
-    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-      <fileNamePattern>${LOG_PATH}/${ERROR_LOG}.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+    <rollingPolicy
+      class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy"
+    >
+      <fileNamePattern
+      >${LOG_PATH}/${ERROR_LOG}.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
       <maxFileSize>${LOG_FILE_MAX_SIZE}</maxFileSize>
       <maxHistory>${LOG_FILE_MAX_HISTORY}</maxHistory>
     </rollingPolicy>
   </appender>
 
   <!-- 访问日志 -->
-  <appender name="API_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+  <appender
+    name="API_FILE"
+    class="ch.qos.logback.core.rolling.RollingFileAppender"
+  >
     <file>${LOG_PATH}/${API_LOG}.log</file>
     <encoder>
       <pattern>${LOG_PATTERN}</pattern>
       <charset>UTF-8</charset>
     </encoder>
-    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-      <fileNamePattern>${LOG_PATH}/${API_LOG}.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+    <rollingPolicy
+      class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy"
+    >
+      <fileNamePattern
+      >${LOG_PATH}/${API_LOG}.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
       <maxFileSize>${LOG_FILE_MAX_SIZE}</maxFileSize>
       <maxHistory>${LOG_FILE_MAX_HISTORY}</maxHistory>
     </rollingPolicy>
@@ -71,20 +92,35 @@
 
   <!-- API日志配置 -->
   <logger name="api" level="INFO" additivity="false">
-    <appender-ref ref="API_FILE"/>
-    <appender-ref ref="CONSOLE"/>
+    <appender-ref ref="API_FILE" />
+    <appender-ref ref="CONSOLE" />
   </logger>
 
 
   <!-- Spring Gateway日志配置 -->
-  <logger name="org.springframework.cloud.gateway" level="INFO" additivity="false">
-    <appender-ref ref="CONSOLE"/>
-    <appender-ref ref="INFO_FILE"/>
+  <logger
+    name="org.springframework.cloud.gateway"
+    level="INFO"
+    additivity="false"
+  >
+    <appender-ref ref="CONSOLE" />
+    <appender-ref ref="INFO_FILE" />
   </logger>
 
   <!-- 根日志配置 -->
   <root level="INFO">
-    <appender-ref ref="CONSOLE"/>
-    <appender-ref ref="ERROR_FILE"/>
+    <appender-ref ref="CONSOLE" />
+    <appender-ref ref="INFO_FILE" />
+    <appender-ref ref="ERROR_FILE" />
+  </root>
+
+  <root level="INFO">
+    <appender-ref ref="CONSOLE" />
+    <appender-ref ref="API_LOG" />
+  </root>
+
+  <root level="ERROR">
+    <appender-ref ref="CONSOLE" />
+    <appender-ref ref="ERROR_LOG" />
   </root>
 </configuration>
